@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SK Fast Track · Design prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="review-tools"><a href="../output/design/index.html">Design review</a><span>Interactive concept · demo data</span><button id="theme-toggle">Dark theme</button><select id="screen-select" aria-label="Preview screen"></select><button id="reset">Reset demo</button></aside>
+  <div class="phone" id="phone">
+    <div class="status"><b>9:41</b><span class="island"></span><span>▮▮▮ &nbsp; ◒ &nbsp; ▰</span></div>
+    <header class="telegram"><button id="back" aria-label="Назад">Закрыть</button><div><b>SK Fast Track</b><small>мини-приложение</small></div><button id="menu" aria-label="Открыть профиль">•••</button></header>
+    <main id="content" tabindex="-1"></main>
+    <footer><button class="main-button" id="main-button"></button><div class="home-indicator"></div></footer>
+  </div>
+  <p class="demo-note">Review prototype. Telegram controls are simulated. Nothing is submitted or sent.</p>
+  <script src="app.js"></script>
+</body>
+</html>

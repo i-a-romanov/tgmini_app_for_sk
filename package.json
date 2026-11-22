@@ -1,0 +1,36 @@
+{
+  "name": "sk-fast-track",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Telegram Mini App with persistent preparation plans, tasks and reminders",
+  "engines": {
+    "node": ">=22.0.0 <25"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "dev": "node --env-file-if-exists=.env server/dev.mjs",
+    "test": "node --test tests/*.test.mjs examples/validate-init-data.test.mjs",
+    "test:e2e": "node scripts/test-live.mjs",
+    "bot:setup": "node --env-file-if-exists=.env scripts/setup-bot.mjs",
+    "test:auth": "node --test examples/validate-init-data.test.mjs",
+    "test:prototype": "node scripts/test-prototype.cjs",
+    "build:design": "python3 scripts/build-design.py && node scripts/render-design.cjs && node scripts/build-review.cjs",
+    "build:review": "node scripts/build-review.cjs"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.5",
+    "@fastify/rate-limit": "11.3.0",
+    "@fastify/static": "10.1.12",
+    "fastify": "5.12.8",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.17",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "marked": "17.0.5",
+    "playwright": "1.62.1",
+    "sharp": "0.35.5",
+    "yaml": "^2.9.1"
+  }
+}

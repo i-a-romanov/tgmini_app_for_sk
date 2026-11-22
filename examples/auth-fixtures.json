@@ -1,0 +1,11 @@
+{
+  "token": "123456:synthetic-test-token",
+  "now": 1800000000,
+  "valid": "auth_date=1800000000&query_id=test-query&user=%7B%22id%22%3A1234567890123%2C%22first_name%22%3A%22%D0%9C%D0%B0%D1%88%D0%B0+%2B+%D1%82%D0%B5%D1%81%D1%82%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=ceee64bfdf570865d07ed60192b88b4fad3494d367c553a2c845b83719763532",
+  "expired": "auth_date=1799999699&query_id=test-query&user=%7B%22id%22%3A1234567890123%2C%22first_name%22%3A%22%D0%9C%D0%B0%D1%88%D0%B0+%2B+%D1%82%D0%B5%D1%81%D1%82%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=f8829062b3e1d3d0a065f66a69f25161648851cdc66999f6def84123defff546",
+  "future": "auth_date=1800000031&query_id=test-query&user=%7B%22id%22%3A1234567890123%2C%22first_name%22%3A%22%D0%9C%D0%B0%D1%88%D0%B0+%2B+%D1%82%D0%B5%D1%81%D1%82%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=ccbdebb296b7430bcc2fa7f5cc86af5b48318b8014b1217bb87e5d7997d1c36b",
+  "boundary": "auth_date=1799999700&query_id=test-query&user=%7B%22id%22%3A1234567890123%2C%22first_name%22%3A%22%D0%9C%D0%B0%D1%88%D0%B0+%2B+%D1%82%D0%B5%D1%81%D1%82%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=d55fb3050b208b14d61ca81ce81cbbd71509ba60eadf4b450a52ab16f4901410",
+  "invalidDate": "auth_date=NaN&query_id=test-query&user=%7B%22id%22%3A1234567890123%2C%22first_name%22%3A%22%D0%9C%D0%B0%D1%88%D0%B0+%2B+%D1%82%D0%B5%D1%81%D1%82%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=aa827c84a86fefb52ea38164f5c7fd6ffcba04ad87286b94c0e77e4822c44199",
+  "badJson": "auth_date=1800000000&query_id=test-query&user=%7Bbad&signature=synthetic_signature_for_hmac_field_coverage&hash=e56b3571bdf867bfd981b3f11e2db9e427252857a45a726f611ec25f7cdc3384",
+  "invalidId": "auth_date=1800000000&query_id=test-query&user=%7B%22id%22%3A-1%2C%22first_name%22%3A%22test%22%7D&signature=synthetic_signature_for_hmac_field_coverage&hash=c50b396979ab36da832784928adf16ef0816fd045f124dc4c315e3f477aff550"
+}

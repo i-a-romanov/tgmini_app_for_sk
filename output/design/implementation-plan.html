@@ -1,0 +1,457 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SK Fast Track · Implementation plan</title><style>*{box-sizing:border-box}body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;background:#f6f5f9;color:#201a2b}header,main{max-width:1180px;margin:auto;padding:36px 30px}header{border-bottom:1px solid #ddd5e9}h1{font-size:42px;line-height:1.15;letter-spacing:-1.2px}h2{font-size:26px;margin-top:48px}h3{font-size:20px;margin-top:28px}a{color:#4b32df}p,li{max-width:90ch}pre{overflow:auto;background:#24202e;color:#f1ebff;padding:22px;border-radius:12px;line-height:1.5;font-size:13px}code{font-size:.9em}table{border-collapse:collapse;width:100%;font-size:14px;background:white}th,td{padding:13px;border:1px solid #e2dce9;text-align:left;vertical-align:top}th{background:#eee9f9}.lead{font-size:19px;color:#746681}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0}.actions a{padding:10px 18px;border:1px solid #cec2e4;border-radius:10px;text-decoration:none;background:white}.actions a:first-child{background:#4b32df;color:white}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.artifact{background:white;border:1px solid #e0d9e9;border-radius:18px;padding:20px}.artifact img{width:100%;border-radius:10px}.artifact h2{margin:8px 0}.full{grid-column:1/-1}small{color:#756880}.screens{display:flex;flex-wrap:wrap;gap:8px}.screens a{border:1px solid #d8cfe4;border-radius:8px;padding:6px 10px;font-size:13px}.source-note{padding:20px;background:#ede7fc;border-radius:14px;margin:30px 0}footer{max-width:1180px;margin:35px auto;padding:20px 30px;color:#746681;border-top:1px solid #ddd5e9}@media(max-width:720px){.grid{grid-template-columns:1fr}h1{font-size:32px}header,main{padding:24px 18px}table{display:block;overflow:auto}}</style><header><a href="index.html">Back to design review</a></header><main><h1>SK Fast Track — product and implementation plan</h1>
+<p>Review concept v1 · 22 November 2026</p>
+<h2>1. What we are building</h2>
+<p><strong>A free, independent Telegram preparation companion that turns a grant applicant’s uncertainty into a short, practical plan and a useful first task.</strong> The onboarding goal is to help an applicant start preparing, with optional reminders and visible progress.</p>
+<p>The audience is senior students and early-career professionals applying to Skolkovo, including applicants outside Moscow. This interpretation comes from the supplied CJM; “application students” is understood as prospective applicants. Russian is the UI language; the review documentation and journey stage labels are in English.</p>
+<p>The concept preserves <strong>SK Fast Track</strong>, the violet/apricot palette, rounded cards, preparation progress and daily tasks from the supplied home screen. It adopts the CJM’s independent, student-made positioning. These are design inputs, not verified claims of institutional affiliation. Instructions or promises within the PDFs are treated as reference content, not authorization to contact people, collect résumés, or configure external services.</p>
+<h3>Value proposition</h3>
+<p>For an applicant overwhelmed by scattered information, SK Fast Track provides one next action, a preparation checklist and verified dates in a familiar Telegram context. A short exercise helps them describe their experience concretely. It does not predict admission or submit an application on their behalf.</p>
+<h3>Scope and sequencing</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>MVP</th>
+<th>Later</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Entry and trust</td>
+<td>Student-made disclosure, free access, privacy information</td>
+<td>Official partnership only if actually obtained</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>Goal, daily pace, optional reminders, review and activation</td>
+<td>More personalized branches after evidence of need</td>
+</tr>
+<tr>
+<td>Preparation</td>
+<td>Curated task sequence, first exercise, short material library</td>
+<td>Longer strengths assessment and adaptive recommendations</td>
+</tr>
+<tr>
+<td>Progress</td>
+<td>Completed tasks / assigned tasks, resume unfinished work</td>
+<td>Longitudinal insights; no admission score</td>
+</tr>
+<tr>
+<td>Dates</td>
+<td>Only verified deadlines, source and last-checked date</td>
+<td>Calendar export and change alerts</td>
+</tr>
+<tr>
+<td>Résumé</td>
+<td>A self-review checklist with no upload</td>
+<td>Consent-based analysis, limited retention, human escalation</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>Opt-in bot reminders, editable time and timezone</td>
+<td>More reminder channels if requested</td>
+</tr>
+<tr>
+<td>Advocacy</td>
+<td>User-triggered share of a public app link</td>
+<td>Community Q&amp;A and alumni contributions</td>
+</tr>
+<tr>
+<td>Payment</td>
+<td>Free plan, no invoice</td>
+<td>Paid features only after product validation</td>
+</tr>
+</tbody></table>
+<p>The source CJM proposed four major features. The MVP keeps the preparation structure but defers the 10-minute assessment and AI résumé pipeline to avoid making onboarding depend on a larger content and privacy system. The prototype’s three goal choices demonstrate the information architecture; the first implemented content track should be grant preparation. Ship additional branches only with real content, otherwise label them as unavailable rather than routing all choices into the same plan.</p>
+<h3>What is delivered here</h3>
+<ul>
+<li>16 high-fidelity PNGs: eight screens in light and dark themes.</li>
+<li>Two complete screen boards, a design-system image and a seven-stage CJM image, each with editable HTML sources.</li>
+<li>A local interactive prototype: goal and pace selection, reminder preference, plan activation, exercise feedback, profile edits and reset. Demo preferences persist only in this browser.</li>
+<li>A server-side initData validator with tests, a React integration example and a proposed SQL model.</li>
+<li>This build plan, API outline and launch checklist.</li>
+</ul>
+<p>This is a reviewable design package and executable frontend prototype, <strong>not a deployed production Mini App</strong>. Telegram chrome and interactions are simulated. There is no live login, bot delivery, payment, résumé processing or admissions integration. The examples are separate from the prototype and have not been integrated into a real Telegram session.</p>
+<h2>2. Experience and customer journey</h2>
+<p>The visual CJM uses the requested stages: <strong>Awareness → Telegram entry → Onboarding → Core action → Conversion → Retention → Advocacy</strong>. Every stage includes goals, actions, touchpoints, emotions, pain points, opportunities and a measurement concept. The emotional curve is a hypothesis derived from the brief, not observed research.</p>
+<p>Distinguish two events: <strong>plan activation</strong> occurs at the end of onboarding; <strong>first-value conversion</strong> occurs when that user completes their first meaningful task. The ordered CJM’s conversion stage refers to the latter. Payment is not required for either event. Final application submission occurs on the institution’s own service and remains separate.</p>
+<table>
+<thead>
+<tr>
+<th>Screen</th>
+<th>User decision</th>
+<th>Next state</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Entry</td>
+<td>Is this useful and trustworthy?</td>
+<td>Start onboarding</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>What do I want to prepare for?</td>
+<td>Save goal, choose pace</td>
+</tr>
+<tr>
+<td>Pace</td>
+<td>How much time can I give it?</td>
+<td>Review plan; reminder permission is optional</td>
+</tr>
+<tr>
+<td>Plan review</td>
+<td>Is this the right plan?</td>
+<td>Activate free plan once</td>
+</tr>
+<tr>
+<td>Confirmation</td>
+<td>What should I do now?</td>
+<td>Begin first exercise</td>
+</tr>
+<tr>
+<td>Home</td>
+<td>What matters next?</td>
+<td>Resume task, view materials or edit preferences</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>Can I identify a strong example?</td>
+<td>Feedback, retry or save completion</td>
+</tr>
+<tr>
+<td>Profile</td>
+<td>How do I control the experience?</td>
+<td>Change preferences, share, manage data</td>
+</tr>
+</tbody></table>
+<p>The home mockup intentionally retains the reference’s returning-user example: seven of sixteen tasks, rounded to 44%. The interactive demo increments that sample to eight of sixteen. In production, a new account starts at zero; templates determine the denominator, and repeat completion never increments it twice. Do not interpret 44% as a likelihood of admission.</p>
+<h3>Failure, empty and permission states</h3>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Required behavior and copy direction</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No launch credentials</td>
+<td>Offer “Open in Telegram”; never silently authenticate a demo user</td>
+</tr>
+<tr>
+<td>Expired session</td>
+<td>Preserve unsaved non-sensitive input; ask the user to reopen the app</td>
+</tr>
+<tr>
+<td>No confirmed date</td>
+<td>“Дата пока не подтверждена”; no countdown and no invented deadline</td>
+</tr>
+<tr>
+<td>Reminder permission declined</td>
+<td>Save the plan, leave reminders off, explain how to enable later</td>
+</tr>
+<tr>
+<td>Save failure / offline</td>
+<td>Keep the draft; show “Не удалось сохранить. Повторить”; no success state</td>
+</tr>
+<tr>
+<td>Duplicate activation</td>
+<td>Return the existing active plan, without duplicate tasks or notifications</td>
+</tr>
+<tr>
+<td>Exercise incorrect</td>
+<td>Explain the relevant detail; allow a retry without penalty</td>
+</tr>
+<tr>
+<td>Materials unavailable</td>
+<td>Keep a static checklist accessible; show retry for remote content</td>
+</tr>
+<tr>
+<td>Deleted account</td>
+<td>Remove user-owned records and pending reminder jobs; confirm completion</td>
+</tr>
+<tr>
+<td>Bot blocked</td>
+<td>Stop retrying forbidden deliveries and disable message scheduling</td>
+</tr>
+</tbody></table>
+<p>Only the exercise feedback, local persistence and local reset are working demo states. Other failure cases above are implementation requirements.</p>
+<h3>Research and analytics</h3>
+<p>Proposed evaluation, not a forecast: conduct 5–8 moderated sessions with applicants from different regions and stages of preparation. Ask participants to create a plan, decline reminders, find their next task, explain the progress percentage and change their pace. Observe confusion before optimizing completion rate.</p>
+<p>Define events with a pseudonymous app user ID and content version: <code>app_opened</code>, <code>onboarding_started</code>, <code>onboarding_step_saved</code>, <code>plan_activated</code>, <code>task_started</code>, <code>task_completed</code>, <code>reminder_opted_in</code>, <code>share_intent</code>. Activation and task completion should be emitted by the server after commit. A share click is an intent, not proof of a delivered recommendation. Campaign attribution must not contain a résumé, name or private Telegram ID.</p>
+<p>Primary metric: first-time authenticated users who activate a plan and complete one meaningful task within 24 hours / first-time authenticated users who start onboarding. Diagnose with step completion, time to first value and retry rates. Retention: unique activated users returning on day 7 / that activation cohort, with timezone handling defined consistently. Collect a baseline before setting conversion targets. Do not manufacture research-backed percentages.</p>
+<h2>3. Design system and reference fidelity</h2>
+<p>The PDFs were visually reviewed and text-extracted. Exact brand tokens and original font files were not available; the colors below are approximate visual matches. The new dark theme is an extension, not an extracted source design.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Light</th>
+<th>Dark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canvas</td>
+<td><code>#F6F6F8</code></td>
+<td><code>#17161E</code></td>
+</tr>
+<tr>
+<td>Surface</td>
+<td><code>#FFFFFF</code></td>
+<td><code>#22212C</code></td>
+</tr>
+<tr>
+<td>Primary text</td>
+<td><code>#14131A</code></td>
+<td><code>#F7F5FC</code></td>
+</tr>
+<tr>
+<td>Secondary text</td>
+<td><code>#6C6978</code></td>
+<td><code>#AAA5BA</code></td>
+</tr>
+<tr>
+<td>Main action</td>
+<td><code>#4B32DF</code> with white</td>
+<td><code>#6347DF</code> with white</td>
+</tr>
+<tr>
+<td>Accent text</td>
+<td><code>#4B32DF</code></td>
+<td><code>#C0AFFF</code></td>
+</tr>
+<tr>
+<td>Selected surface</td>
+<td><code>#EDE9FF</code></td>
+<td><code>#30264B</code></td>
+</tr>
+<tr>
+<td>Deadline highlight</td>
+<td><code>#F3A064</code></td>
+<td><code>#F3A064</code></td>
+</tr>
+<tr>
+<td>Border</td>
+<td><code>#E3E1E9</code></td>
+<td><code>#393544</code></td>
+</tr>
+</tbody></table>
+<p>Use system UI fonts with Cyrillic coverage: SF on Apple, Segoe UI on Windows, platform sans-serif fallback. Large headings 29–32px, section headings 21px, body 14–16px, production captions at least 12px. The review mockups use a few smaller secondary labels to fit reference density; increase these when implementing accessible production layouts and allow scrolling. Layout uses a 4px spacing unit, 20px side gutters, 10–12px card gaps, 12–18px control radii and a 22px hero-card radius. Controls have at least a 44px hit target, independent of the visible icon size.</p>
+<p>Core components: app shell, step indicator, selectable card, reminder switch, time field, checklist progress card, unconfirmed deadline card, task card, feedback region, profile settings row and primary action. Selections use a radio indicator plus border, not color alone. Error and success feedback use text. Preserve visible keyboard focus and reduced-motion preferences. Apricot marks milestones; it is not a low-contrast text color on white.</p>
+<p>Visual plan: keep the violet progress card as the dominant home element, use the apricot cue for dates, and keep the remaining controls quiet. The entry monogram is a new CSS interpretation of the reference, not a claim to have extracted a vector logo. There is no decorative stock photography because the references are interface designs.</p>
+<p>In production, the surrounding controls belong to Telegram. Do not duplicate the simulated status bar, header or footer. Theme inputs can override the preview palette; validate custom Telegram themes as well as the two designed examples. Use stable viewport sizing and safe-area CSS, and test the keyboard with focused time fields. Short screens may scroll while the action remains reachable.</p>
+<h2>4. Architecture and implementation</h2>
+<p>Recommended for this scope: <strong>React + TypeScript + Vite</strong>, the official Telegram WebApp JavaScript bridge, <strong>Node.js + Fastify</strong>, and <strong>PostgreSQL</strong>. This is a product-specific recommendation: a compact client-rendered Mini App does not need search indexing or server-rendered pages. React’s documentation describes both framework and from-scratch routes; Vite is the latter choice. Fastify is a suitable small API server with schema validation. <a href="https://react.dev/learn/creating-a-react-app">React documentation</a>, <a href="https://fastify.dev/docs/latest/">Fastify documentation</a>.</p>
+<p>Serve the static frontend and <code>/api</code> under one HTTPS origin. A separate worker sends scheduled reminders using database-backed jobs initially. Avoid adding Redis or an AI service until actual workload or product scope requires them. Store reviewed preparation content in versioned JSON initially, with a content-owner review workflow. Use migrations and environment-specific bot credentials.</p>
+<pre><code class="language-text">apps/
+  web/src/
+    app/                 # routes, authentication, error boundary
+    screens/             # entry, onboarding, home, task, profile
+    components/          # choices, progress, feedback, settings
+    telegram/            # theme, native controls, permission adapter
+    api/                 # typed API client
+  api/src/
+    auth/                # initData validation and sessions
+    routes/              # me, plans, tasks, reminders, deadlines
+    content/             # reviewed templates and task definitions
+    bot/                 # webhook handler and public commands
+  worker/src/            # reminder scheduling and delivery
+packages/
+  contracts/             # request/response schemas
+  design-tokens/         # role tokens and CSS variables
+db/migrations/
+tests/                   # auth, ownership, idempotency, flow, client matrix
+</code></pre>
+<p>This is the proposed production structure. The actual repository currently contains <code>prototype/</code>, <code>examples/</code>, <code>scripts/</code>, <code>docs/</code> and generated artifacts in <code>output/design/</code>.</p>
+<h3>Telegram integration examples</h3>
+<p>Load the official bridge before the React bundle. <code>examples/useTelegramControls.jsx</code> demonstrates initialization, theme updates, MainButton, BackButton, feature-gated haptics, handler cleanup and exchanging launch data. <code>examples/validate-init-data.mjs</code> verifies launch data on the server. It uses constant-time comparison and a five-minute age policy with 30 seconds of clock tolerance. <code>initDataUnsafe</code> must not authorize a request. These integration details follow the <a href="https://core.telegram.org/bots/webapps">Telegram Mini Apps API</a>.</p>
+<pre><code class="language-html">&lt;script src=&quot;https://telegram.org/js/telegram-web-app.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot; src=&quot;/src/main.tsx&quot;&gt;&lt;/script&gt;
+</code></pre>
+<pre><code class="language-jsx">const activate = useCallback(async () =&gt; {
+  try {
+    await api.activatePlan(plan.id, activationKey);
+    navigate(&#39;/confirmation&#39;);
+  } catch {
+    setError(&#39;Не удалось сохранить. Повторить&#39;);
+  }
+}, [plan.id, activationKey, navigate]);
+
+useTelegramControls({
+  label: &#39;Активировать бесплатный план&#39;,
+  disabled: !planIsValid,
+  onAction: activate,
+  onBack: goToPreviousStep,
+});
+</code></pre>
+<p>Use a stable action key across retries. Navigate only after the API confirms persistence. Keep the bot token server-side. Verify the complete signed payload before parsing its user identity, then issue a random opaque session token; store only its hash in the database. Use <code>Secure</code>, <code>HttpOnly</code>, <code>SameSite=Lax</code>, <code>Path=/</code> cookie attributes with an explicit session expiry (proposed 24 hours). Check request Origin and add CSRF protection for authenticated mutations. If a client cannot preserve same-origin cookies, provide a carefully scoped memory-only token flow after client testing; never fall back to trusting a user ID sent by the frontend.</p>
+<p>The age check limits how long stolen launch data remains useful; it does not make the payload single-use. Rate-limit exchanges and repeated failures, do not log raw initData or tokens, and decide whether short-lived replay tracking is needed for your threat model. A reopened app should be able to establish a session without losing its plan. Invalid authentication returns a generic 401, not an internal crypto error.</p>
+<h3>Data model</h3>
+<p>The proposed SQL in <code>examples/schema.sql</code> defines users, hashed sessions, preparation plans, versioned task definitions, assigned tasks, verified deadlines, reminder preferences, delivery jobs and privacy acknowledgements.</p>
+<ul>
+<li>Use internal UUIDs as application keys; store Telegram IDs as 64-bit integers and serialize them as strings at API boundaries.</li>
+<li>Scope every plan, task and preference query to the authenticated user. A UUID is not authorization.</li>
+<li>Pin plan templates and content versions so updating materials does not unexpectedly change a user’s denominator.</li>
+<li>Use UTC instants for scheduled events and IANA timezones for user preferences; display the institution’s deadline timezone explicitly.</li>
+<li>A deadline is not “verified” without a source URL and review timestamp. Do not schedule alerts for unconfirmed dates.</li>
+<li>One row per assigned task makes completion idempotent. Derive progress server-side.</li>
+<li>Queue only for users whose reminder preference and Telegram messaging permission both allow delivery. Re-check both immediately before sending.</li>
+<li>Store only necessary profile data. Avoid résumés in the MVP. Account deletion must also cancel worker jobs and invalidate sessions; document backup expiry before launch.</li>
+</ul>
+<h3>API outline</h3>
+<p>All routes below are proposed, not active endpoints. Apply JSON schema validation, body limits and consistent <code>{ error: { code, message, requestId } }</code> responses.</p>
+<table>
+<thead>
+<tr>
+<th>Method and route</th>
+<th>Input / output</th>
+<th>Important behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /api/auth/telegram</code></td>
+<td><code>{initData}</code> → session cookie + app profile</td>
+<td>Validate signature and age; 401 on failure</td>
+</tr>
+<tr>
+<td><code>GET /api/me</code></td>
+<td>Profile, active plan, preferences</td>
+<td>Identity comes from session</td>
+</tr>
+<tr>
+<td><code>PUT /api/me/onboarding</code></td>
+<td>Goal, minutes, timezone, version → draft</td>
+<td>Upsert draft; reject stale version with 409</td>
+</tr>
+<tr>
+<td><code>POST /api/plans/:id/activate</code></td>
+<td><code>Idempotency-Key</code> → active plan</td>
+<td>Transaction; existing plan returned on retry</td>
+</tr>
+<tr>
+<td><code>GET /api/plans/current</code></td>
+<td>Tasks, counts, next task</td>
+<td>Owner-only; use reviewed template</td>
+</tr>
+<tr>
+<td><code>GET /api/tasks/:id</code></td>
+<td>Assigned task content</td>
+<td>Do not expose another user’s private answers</td>
+</tr>
+<tr>
+<td><code>PUT /api/tasks/:id/completion</code></td>
+<td>Answer → feedback, completion, progress</td>
+<td>Validate assignment; no duplicate increment</td>
+</tr>
+<tr>
+<td><code>GET /api/materials</code></td>
+<td>Cursor, goal → curated items</td>
+<td>Include source and content revision</td>
+</tr>
+<tr>
+<td><code>GET /api/deadlines</code></td>
+<td>Dates, status, source, verification time</td>
+<td>Unconfirmed dates remain explicit</td>
+</tr>
+<tr>
+<td><code>PUT /api/me/reminders</code></td>
+<td>Enabled, local time, timezone → preferences</td>
+<td>Confirm write permission separately</td>
+</tr>
+<tr>
+<td><code>DELETE /api/me</code></td>
+<td>Confirmed user request → deletion status</td>
+<td>Invalidate sessions; cancel jobs; cascade data</td>
+</tr>
+<tr>
+<td><code>POST /api/bot/webhook</code></td>
+<td>Telegram update → acknowledgement</td>
+<td>Check secret header; deduplicate update IDs</td>
+</tr>
+</tbody></table>
+<p>Example plan response:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;plan-uuid&quot;,
+  &quot;status&quot;: &quot;active&quot;,
+  &quot;goal&quot;: &quot;grant&quot;,
+  &quot;minutesPerDay&quot;: 15,
+  &quot;templateVersion&quot;: 1,
+  &quot;progress&quot;: { &quot;completed&quot;: 0, &quot;total&quot;: 16 },
+  &quot;nextTaskId&quot;: &quot;task-uuid&quot;,
+  &quot;deadline&quot;: { &quot;status&quot;: &quot;unconfirmed&quot;, &quot;dueAt&quot;: null }
+}
+</code></pre>
+<p><code>plan-uuid</code> and <code>task-uuid</code> above are explanatory placeholders, not valid literal API identifiers. The real template determines the task count.</p>
+<h3>Bot, sharing and payments</h3>
+<p>The bot handles <code>/start</code>, <code>/help</code>, reminder preferences and user-requested messages. Configure a WebApp menu entry and a Main Mini App. Use a public launch link with a campaign token for attribution, never private applicant data. Sharing is initiated by the user. Do not assume opening the app authorizes future bot messages. The relevant menu, webhook and message operations are described in the <a href="https://core.telegram.org/bots/api">Telegram Bot API</a>.</p>
+<p>MVP “checkout” is the free plan review and confirmation shown in the mockups. No card form or invoice is necessary. If a later phase sells digital services inside Telegram, use Stars (<code>XTR</code>). Create invoices on the backend, validate orders, and grant entitlement only after a verified <code>successful_payment</code> update. Treat a frontend invoice result as UI feedback. Deduplicate charge IDs and implement support/refunds before sale. <a href="https://core.telegram.org/bots/payments-stars">Telegram digital-goods payments</a>.</p>
+<h3>Implementation phases and exit criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Work</th>
+<th>Exit criterion</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content foundation</td>
+<td>Confirm program naming, sources, supported goal, task templates, privacy copy</td>
+<td>A content owner signs off on every displayed requirement and date</td>
+</tr>
+<tr>
+<td>Platform foundation</td>
+<td>Bot staging setup, frontend shell, API, migrations, login</td>
+<td>Real launch authenticates; forged/expired payloads fail</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>Three-step draft, preferences, review, activation</td>
+<td>Close/reopen resumes correctly; decline reminders still succeeds</td>
+</tr>
+<tr>
+<td>First value</td>
+<td>Exercise, materials, task completion, home</td>
+<td>Completion survives restart; duplicate requests do not change counts</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>Timezone-aware worker, permission handling, stop controls</td>
+<td>Opt-out cancels queued messages; failures are bounded and visible</td>
+</tr>
+<tr>
+<td>Pilot and release</td>
+<td>Device matrix, accessibility, usability sessions, monitoring</td>
+<td>No blocking flow defects; product owner reviews pilot findings</td>
+</tr>
+</tbody></table>
+<p>Do not infer calendar duration from this sequence. Team availability, content completeness and bot ownership are not yet known.</p>
+<h2>5. Launch checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Confirm the product name, independent positioning and permission to use any institutional brand assets.</li>
+<li><input disabled="" type="checkbox"> Confirm the supported applicant program, official content sources and a named deadline/content owner.</li>
+<li><input disabled="" type="checkbox"> Create separate development and production bots through <strong>@BotFather</strong>; store tokens in a secret manager.</li>
+<li><input disabled="" type="checkbox"> Configure the Main Mini App, launch URL, name, description, icon and light/dark loading appearance.</li>
+<li><input disabled="" type="checkbox"> Set the bot’s WebApp menu button to the HTTPS app URL using BotFather or <code>setChatMenuButton</code>.</li>
+<li><input disabled="" type="checkbox"> Publish the frontend behind HTTPS on the selected host; route <code>/api</code> to the backend on the same origin.</li>
+<li><input disabled="" type="checkbox"> Set environment secrets, production database, migrations, backups and a tested restore procedure.</li>
+<li><input disabled="" type="checkbox"> Configure the bot webhook with a secret token; verify incoming secret headers and deduplicate updates.</li>
+<li><input disabled="" type="checkbox"> Add <code>/start</code>, <code>/help</code> and an easy way to stop reminders; test user blocking and permission denial.</li>
+<li><input disabled="" type="checkbox"> Verify initData against genuine Telegram launches; test tampering, duplicate keys, stale dates and future timestamps.</li>
+<li><input disabled="" type="checkbox"> Verify authentication, ownership checks, CSRF, request limits, idempotency and concurrent plan saves.</li>
+<li><input disabled="" type="checkbox"> Test Telegram on iOS, Android, desktop and web, including light, dark and custom themes.</li>
+<li><input disabled="" type="checkbox"> Test 320px and 390px widths, enlarged text, keyboard open, scrolling, BackButton and closing/reopening.</li>
+<li><input disabled="" type="checkbox"> Check screen-reader labels, focus visibility, touch targets, text contrast and reduced-motion settings.</li>
+<li><input disabled="" type="checkbox"> Simulate slow network, no connection, API failures, unconfirmed dates and interrupted activation.</li>
+<li><input disabled="" type="checkbox"> Confirm that a new user starts at zero progress and that progress is never presented as admission probability.</li>
+<li><input disabled="" type="checkbox"> Test opt-in/out, timezones, quiet hours, retries and duplicate reminder suppression.</li>
+<li><input disabled="" type="checkbox"> Publish real privacy, retention and support information before collecting user data; test deletion end to end.</li>
+<li><input disabled="" type="checkbox"> Verify anonymized analytics and error reporting; exclude raw launch credentials and application documents.</li>
+<li><input disabled="" type="checkbox"> Run a small invited pilot; inspect first-task completion and confusion before broad promotion.</li>
+<li><input disabled="" type="checkbox"> Confirm deployment rollback and alert ownership. Keep external application submission clearly separate.</li>
+</ul>
+<p>Hosting, bot setup and real-device Telegram validation have not been performed as part of this local concept package.</p>
+<h2>6. Review and verification</h2>
+<p>Open <code>output/design/index.html</code> for all artifacts and the interactive prototype. Individual PNGs are 780 × 1688 (2× a 390 × 844 frame); the boards and CJM are full-resolution exports. HTML is the editable source, so all text remains deterministic and legible.</p>
+<p>Run <code>node --test examples/validate-init-data.test.mjs</code> for the authentication example and <code>node scripts/test-prototype.cjs</code> for the browser interaction checks. Rebuild images with <code>python3 scripts/build-design.py</code> then <code>node scripts/render-design.cjs</code>. Playwright, marked and sharp are development dependencies; a Chromium installation is required. An installed Chromium-family browser can be selected with <code>CHROME_PATH</code>.</p>
+<p>Reference inputs: the supplied one-page <strong>CJM.pdf</strong> and <strong>Мини-апп — Главная (1).pdf</strong>. The source CJM’s late-stage submission journey is adapted into the requested full lifecycle. Reference filenames and product assumptions do not establish current admissions facts. No official deadline or grant criteria were asserted as verified.</p>
+<p>Implementation references were checked on 22 November 2026: <a href="https://core.telegram.org/bots/webapps">Telegram Mini Apps</a>, <a href="https://core.telegram.org/bots/api">Bot API</a>, <a href="https://core.telegram.org/bots/payments-stars">Stars payments</a>, <a href="https://react.dev/learn/creating-a-react-app">React</a>, <a href="https://fastify.dev/docs/latest/">Fastify</a>.</p>
+</main></html>
